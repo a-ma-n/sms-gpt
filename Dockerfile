@@ -12,11 +12,11 @@ RUN apt-get update && \
 # Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# Pull the DeepSeek 1.5B model
-RUN ollama pull deepseek-r1:1.5b
-
 # Set working directory
 WORKDIR /app
+
+# Start Ollama service in the background & pull model
+RUN ollama serve & sleep 5 && ollama pull deepseek-r1:1.5b
 
 # Copy app files
 COPY app.py /app/app.py
@@ -28,5 +28,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Expose API port
 EXPOSE 8000
 
-# Start the FastAPI server
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start Ollama & FastAPI server
+CMD ollama serve & uvicorn app:app --host 0.0.0.0 --port 8000

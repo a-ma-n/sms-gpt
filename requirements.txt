@@ -1,4 +1,6 @@
 fastapi
 uvicorn
-pydantic
 ollama
+deep_translator
+langdetect
+indic-transliteration
